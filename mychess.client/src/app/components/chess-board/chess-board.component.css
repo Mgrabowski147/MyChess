@@ -1,0 +1,19 @@
+.chessboard {
+  width: 60%;
+  display: grid;
+  grid-template-columns: repeat(8, 12.5%);
+  grid-template-rows: repeat(8, 12.5%);
+  aspect-ratio: 1/1;
+}
+
+.chess-square {
+  height: 100%;
+  width: 100%;
+}
+
+.chessboard-container {
+  width:100%;
+  display: flex;
+  justify-content: center;
+
+}

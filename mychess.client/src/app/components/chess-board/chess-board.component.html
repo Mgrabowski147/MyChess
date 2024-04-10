@@ -1,1 +1,14 @@
-<p>chess-board works!</p>
+<div class="chessboard-container">
+  <div class="chessboard">
+    @for (square of board.squares; track square) {
+      <div class="chess-square">
+          <app-chess-square 
+          [id]="square.id" 
+          [isBlack]="square.isBlack"
+          [piece]="square.piece">
+        </app-chess-square>
+      </div>
+    }
+  </div>
+  
+</div>

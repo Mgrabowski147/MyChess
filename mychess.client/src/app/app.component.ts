@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { ChessBoardComponent } from './components/chess-board/chess-board.component';
 
 interface WeatherForecast {
   date: string;
@@ -11,7 +12,9 @@ interface WeatherForecast {
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
+  standalone: true,
+  imports: [ChessBoardComponent]
 })
 export class AppComponent implements OnInit {
   public forecasts: WeatherForecast[] = [];
@@ -19,7 +22,7 @@ export class AppComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.getForecasts();
+    //this.getForecasts();
   }
 
   getForecasts() {
