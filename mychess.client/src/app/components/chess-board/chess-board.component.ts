@@ -37,21 +37,22 @@ export class ChessBoardComponent implements OnInit {
   onSquareClick(square: Square) {
     this.clearHighlights();
 
-    if (!this.selectedSquare) {
-      this.selectedSquare = square;
-      const moves = this.movesService.GetPossibleMovesForSquare(
-        square,
-        this.board,
-      );
-      this.highlightPossibleMoves(moves);
-    } else {
+    if (this.selectedSquare) {
       if (this.canMakeMove(this.selectedSquare, square)) {
         this.makeMove(
           MoveFactory.createMoveWithSquares(this.selectedSquare, square),
         );
+        this.selectedSquare = undefined;
+        return;
       }
-      this.selectedSquare = undefined;
     }
+
+    this.selectedSquare = square;
+    const moves = this.movesService.GetPossibleMovesForSquare(
+      square,
+      this.board,
+    );
+    this.highlightPossibleMoves(moves);
   }
 
   private canMakeMove(squareFrom: Square, squareTo: Square) {
