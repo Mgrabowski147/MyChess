@@ -5,6 +5,14 @@
     black: square().isBlack
   }"
 >
+  @if (square().isHighlighted() === true) {
+    <div class="highlight">
+      <svg width="100%">
+        <circle cx="50%" cy="44%" r="12%" fill="gray" fill-opacity="0.5" />
+      </svg>
+    </div>
+  }
+
   @if (square().piece() !== undefined) {
     <app-chess-piece [piece]="square().piece()!"></app-chess-piece>
   }
