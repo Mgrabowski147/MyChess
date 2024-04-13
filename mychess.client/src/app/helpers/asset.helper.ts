@@ -21,6 +21,6 @@ export class AssetHelper {
     const basePath = 'assets/pieces/basic/';
     const colour = this.colourMap.get(piece.colour);
     const type = this.typeMap.get(piece.type);
-    return basePath + colour + '_' + type + '.png';
+    return basePath + colour + '_' + type + '.svg';
   }
 }
