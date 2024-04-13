@@ -4,5 +4,5 @@ export enum PieceType {
   Knight,
   Bishop,
   Queen,
-  King
+  King,
 }

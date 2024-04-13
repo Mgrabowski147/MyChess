@@ -1,42 +1,50 @@
 import { Injectable } from '@angular/core';
-import { PieceColour } from "../enums/piece-colour.enum";
-import { PieceType } from "../enums/piece-type.enum";
-import { Board } from "../models/board.model"
-import { Piece } from "../models/piece.model";
-import { Square } from "../models/square.model";
+import { PieceColour } from '../enums/piece-colour.enum';
+import { PieceType } from '../enums/piece-type.enum';
+import { Board } from '../models/board.model';
+import { Piece } from '../models/piece.model';
+import { Square } from '../models/square.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BoardSetupService {
-
-  constructor() { }
+  constructor() {}
 
   public SetupNewBoard(): Board {
     const board: Board = { squares: [] };
     for (let i = 1; i <= 8; i++) {
-      for (let j = 1; j <=8; j++) {
-        const square = new Square(i, j, this.IsSquareBlack(i, j), this.GetInitialPieceForSquare(i, j), false);
+      for (let j = 1; j <= 8; j++) {
+        const square = new Square(
+          i,
+          j,
+          this.IsSquareBlack(i, j),
+          this.GetInitialPieceForSquare(i, j),
+          false,
+        );
         board.squares.push(square);
       }
     }
-    
+
     return board;
   }
 
   private IsSquareBlack(row: number, column: number): boolean {
-    return (row%2 + column%2)%2 === 0;
+    return ((row % 2) + (column % 2)) % 2 === 0;
   }
 
-  private GetInitialPieceForSquare(row: number, column: number): Piece | undefined {
+  private GetInitialPieceForSquare(
+    row: number,
+    column: number,
+  ): Piece | undefined {
     if (!this.shouldSquareHavePiece(row)) {
       return undefined;
     }
 
     return {
       colour: this.GetPieceColour(row)!,
-      type: this.GetPieceType(row, column)!
-    }
+      type: this.GetPieceType(row, column)!,
+    };
   }
 
   private shouldSquareHavePiece(row: number): boolean {
@@ -48,9 +56,9 @@ export class BoardSetupService {
       return PieceColour.White;
     }
     if (row === 7 || row === 8) {
-      return PieceColour.Black
+      return PieceColour.Black;
     }
-    
+
     return undefined;
   }
 
@@ -61,7 +69,7 @@ export class BoardSetupService {
     if (this.IsMajorPiecesRow(row)) {
       return this.GetMajorPieceByColumn(column);
     }
-  
+
     return undefined;
   }
 

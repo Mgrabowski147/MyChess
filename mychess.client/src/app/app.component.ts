@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ChessBoardComponent } from './components/chess-board/chess-board.component';
 
 interface WeatherForecast {
@@ -14,16 +14,12 @@ interface WeatherForecast {
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   standalone: true,
-  imports: [ChessBoardComponent]
+  imports: [ChessBoardComponent],
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   public forecasts: WeatherForecast[] = [];
 
   constructor(private http: HttpClient) {}
-
-  ngOnInit() {
-    //this.getForecasts();
-  }
 
   getForecasts() {
     this.http.get<WeatherForecast[]>('/weatherforecast').subscribe(
@@ -32,7 +28,7 @@ export class AppComponent implements OnInit {
       },
       (error) => {
         console.error(error);
-      }
+      },
     );
   }
 

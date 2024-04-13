@@ -1,8 +1,11 @@
-<div class="square" [ngClass]="{
-  'white': !square().isBlack,
-  'black': square().isBlack
-  }">
-  @if(square().piece() !== undefined) {
+<div
+  class="square"
+  [ngClass]="{
+    white: !square().isBlack,
+    black: square().isBlack
+  }"
+>
+  @if (square().piece() !== undefined) {
     <app-chess-piece [piece]="square().piece()!"></app-chess-piece>
   }
 </div>

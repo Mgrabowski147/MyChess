@@ -1,19 +1,20 @@
-import { Signal, signal } from "@angular/core";
-import { Piece } from "./piece.model";
+import { Signal, signal } from '@angular/core';
+import { Piece } from './piece.model';
 
 export class Square {
   row: number;
-  column: number
+  column: number;
   isBlack: boolean;
   piece: Signal<Piece | undefined>;
-  isHighlighted: Signal<boolean>
+  isHighlighted: Signal<boolean>;
 
   constructor(
     row: number,
     column: number,
     isBlack: boolean,
     piece: Piece | undefined,
-    isHighlighted: boolean) {
+    isHighlighted: boolean,
+  ) {
     this.row = row;
     this.column = column;
     this.isBlack = isBlack;
