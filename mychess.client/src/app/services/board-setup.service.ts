@@ -13,8 +13,9 @@ export class BoardSetupService {
 
   public SetupNewBoard(): Board {
     const board: Board = { squares: [] };
-    for (let i = 1; i <= 8; i++) {
-      for (let j = 1; j <= 8; j++) {
+    for (let i = 0; i < 8; i++) {
+      const row = [];
+      for (let j = 0; j < 8; j++) {
         const square = new Square(
           i,
           j,
@@ -22,8 +23,9 @@ export class BoardSetupService {
           this.GetInitialPieceForSquare(i, j),
           false,
         );
-        board.squares.push(square);
+        row.push(square);
       }
+      board.squares.push(row);
     }
 
     return board;
@@ -48,14 +50,14 @@ export class BoardSetupService {
   }
 
   private shouldSquareHavePiece(row: number): boolean {
-    return [1, 2, 7, 8].includes(row);
+    return [0, 1, 6, 7].includes(row);
   }
 
   private GetPieceColour(row: number): PieceColour | undefined {
-    if (row === 1 || row === 2) {
+    if (row === 0 || row === 1) {
       return PieceColour.White;
     }
-    if (row === 7 || row === 8) {
+    if (row === 6 || row === 7) {
       return PieceColour.Black;
     }
 
@@ -74,27 +76,27 @@ export class BoardSetupService {
   }
 
   private IsMajorPiecesRow(row: number): boolean {
-    return row === 1 || row === 8;
+    return row === 0 || row === 7;
   }
 
   private IsPawnsRow(row: number): boolean {
-    return row === 2 || row === 7;
+    return row === 1 || row === 6;
   }
 
   private GetMajorPieceByColumn(column: number): PieceType | undefined {
-    if (column === 1 || column === 8) {
+    if (column === 0 || column === 7) {
       return PieceType.Rook;
     }
-    if (column === 2 || column === 7) {
+    if (column === 1 || column === 6) {
       return PieceType.Knight;
     }
-    if (column === 3 || column === 6) {
+    if (column === 2 || column === 5) {
       return PieceType.Bishop;
     }
-    if (column === 4) {
+    if (column === 3) {
       return PieceType.Queen;
     }
-    if (column === 5) {
+    if (column === 4) {
       return PieceType.King;
     }
 
