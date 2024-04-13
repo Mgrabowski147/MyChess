@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { Piece } from '../../models/piece.model';
 import { ChessPieceComponent } from "../chess-piece/chess-piece.component";
+import { Square } from '../../models/square.model';
 
 @Component({
     selector: 'app-chess-square',
@@ -12,7 +13,5 @@ import { ChessPieceComponent } from "../chess-piece/chess-piece.component";
     imports: [CommonModule, ChessPieceComponent]
 })
 export class ChessSquareComponent {
-  public id = input.required<number>();
-  public isBlack = input.required<boolean>();
-  public piece = input<Piece>();
+  public square = input.required<Square>();
 }

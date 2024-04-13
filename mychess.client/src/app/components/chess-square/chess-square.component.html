@@ -1,8 +1,8 @@
 <div class="square" [ngClass]="{
-  'white': !isBlack(),
-  'black': isBlack()
+  'white': !square().isBlack,
+  'black': square().isBlack
   }">
-  @if(piece() !== undefined) {
-    <app-chess-piece [piece]="piece()!"></app-chess-piece>
+  @if(square().piece() !== undefined) {
+    <app-chess-piece [piece]="square().piece()!"></app-chess-piece>
   }
 </div>

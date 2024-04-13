@@ -21,6 +21,6 @@ export class ChessBoardComponent implements OnInit {
   constructor(private boardSetupService: BoardSetupService) { }
 
   ngOnInit(): void {
-    this.board = this.boardSetupService.setupNewBoard();
+    this.board = this.boardSetupService.SetupNewBoard();
   }
 }

@@ -12,73 +12,84 @@ export class BoardSetupService {
 
   constructor() { }
 
-  public setupNewBoard(): Board {
+  public SetupNewBoard(): Board {
     const board: Board = { squares: [] };
-    for (let i = 63; i >= 0; i--) {
-      const square: Square = {
-        id: i,
-        isBlack: this.IsSquareBlack(i),
-        piece: this.getInitialPieceForSquare(i)
+    for (let i = 1; i <= 8; i++) {
+      for (let j = 1; j <=8; j++) {
+        const square = new Square(i, j, this.IsSquareBlack(i, j), this.GetInitialPieceForSquare(i, j), false);
+        board.squares.push(square);
       }
-      board.squares.push(square);
     }
+    
     return board;
   }
 
-  private IsSquareBlack(squareId: number): boolean {
-    return (squareId + Math.floor(squareId/8))%2 == 0
+  private IsSquareBlack(row: number, column: number): boolean {
+    return (row%2 + column%2)%2 === 0;
   }
 
-  private getInitialPieceForSquare(squareId: number): Piece | undefined {
-    if (!this.shouldSquareHavePiece(squareId)) {
+  private GetInitialPieceForSquare(row: number, column: number): Piece | undefined {
+    if (!this.shouldSquareHavePiece(row)) {
       return undefined;
     }
 
     return {
-      colour: this.getPieceColour(squareId)!,
-      type: this.getPieceType(squareId)!
+      colour: this.GetPieceColour(row)!,
+      type: this.GetPieceType(row, column)!
     }
   }
 
-  private shouldSquareHavePiece(squareId: number): boolean {
-    if (squareId < 0 || squareId > 63 || (squareId > 15 && squareId < 48)) {
-      return false;
-    }
-
-    return true;
+  private shouldSquareHavePiece(row: number): boolean {
+    return [1, 2, 7, 8].includes(row);
   }
 
-  private getPieceColour(squareId: number): PieceColour | undefined {
-    if (squareId < 16) {
+  private GetPieceColour(row: number): PieceColour | undefined {
+    if (row === 1 || row === 2) {
       return PieceColour.White;
     }
-    else if (squareId > 47) {
+    if (row === 7 || row === 8) {
       return PieceColour.Black
     }
     
     return undefined;
   }
 
-  private getPieceType(squareId: number): PieceType | undefined {
-    if (squareId === 0 || squareId === 7 || squareId === 56 || squareId === 63) {
-      return PieceType.Rook;
-    }
-    if (squareId === 1 || squareId === 6 || squareId === 57 || squareId === 62) {
-      return PieceType.Knight;
-    }
-    if (squareId === 2 || squareId === 5 || squareId === 58 || squareId === 61) {
-      return PieceType.Bishop;
-    }
-    if (squareId === 3 || squareId === 59) {
-      return PieceType.Queen;
-    }
-    if (squareId === 4 || squareId === 60) {
-      return PieceType.King;
-    }
-    if (squareId >= 8 && squareId <= 15 || squareId >= 48 && squareId <= 55) {
+  private GetPieceType(row: number, column: number): PieceType | undefined {
+    if (this.IsPawnsRow(row)) {
       return PieceType.Pawn;
     }
+    if (this.IsMajorPiecesRow(row)) {
+      return this.GetMajorPieceByColumn(column);
+    }
   
+    return undefined;
+  }
+
+  private IsMajorPiecesRow(row: number): boolean {
+    return row === 1 || row === 8;
+  }
+
+  private IsPawnsRow(row: number): boolean {
+    return row === 2 || row === 7;
+  }
+
+  private GetMajorPieceByColumn(column: number): PieceType | undefined {
+    if (column === 1 || column === 8) {
+      return PieceType.Rook;
+    }
+    if (column === 2 || column === 7) {
+      return PieceType.Knight;
+    }
+    if (column === 3 || column === 6) {
+      return PieceType.Bishop;
+    }
+    if (column === 4) {
+      return PieceType.Queen;
+    }
+    if (column === 5) {
+      return PieceType.King;
+    }
+
     return undefined;
   }
 }
