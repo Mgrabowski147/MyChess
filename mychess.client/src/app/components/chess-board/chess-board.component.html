@@ -1,9 +1,9 @@
 <div class="chessboard-container">
   <div class="chessboard">
-    @for (row of board.squares.reverse(); track row) {
+    @for (row of displayBoard.squares; track row) {
       @for (square of row; track square) {
         <div class="chess-square">
-          <app-chess-square [square]="square"> </app-chess-square>
+          <app-chess-square [square]="square" (click)="onSquareClick(square)"> </app-chess-square>
         </div>
       }
     }

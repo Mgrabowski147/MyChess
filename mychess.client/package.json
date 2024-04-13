@@ -24,6 +24,7 @@
     "@angular/platform-browser-dynamic": "^17.2.0",
     "@angular/router": "^17.2.0",
     "jest-editor-support": "*",
+    "lodash-es": "^4.17.21",
     "run-script-os": "*",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
@@ -40,6 +41,7 @@
     "@angular/compiler-cli": "^17.2.0",
     "@eslint/eslintrc": "^3.0.2",
     "@types/jasmine": "~5.1.0",
+    "@types/lodash-es": "^4.17.12",
     "@typescript-eslint/eslint-plugin": "7.2.0",
     "@typescript-eslint/parser": "7.2.0",
     "eslint": "^8.57.0",
@@ -59,7 +61,7 @@
     "typescript-eslint": "^7.6.0"
   },
   "lint-staged": {
-    "**/*.{ts,tsx,css,html}": [
+    "**/*.{ts,html}": [
       "eslint --fix"
     ]
   }

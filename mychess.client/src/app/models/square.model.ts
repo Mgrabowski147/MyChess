@@ -1,12 +1,12 @@
-import { Signal, signal } from '@angular/core';
+import { WritableSignal, signal } from '@angular/core';
 import { Piece } from './piece.model';
+import { Coordinates } from './coordinates.model';
 
 export class Square {
-  row: number;
-  column: number;
+  coordinates: Coordinates
   isBlack: boolean;
-  piece: Signal<Piece | undefined>;
-  isHighlighted: Signal<boolean>;
+  piece: WritableSignal<Piece | undefined>;
+  isHighlighted: WritableSignal<boolean>;
 
   constructor(
     row: number,
@@ -15,8 +15,9 @@ export class Square {
     piece: Piece | undefined,
     isHighlighted: boolean,
   ) {
-    this.row = row;
-    this.column = column;
+    this.coordinates = new Coordinates();
+    this.coordinates.row = row;
+    this.coordinates.column = column;
     this.isBlack = isBlack;
     this.piece = signal(piece);
     this.isHighlighted = signal(isHighlighted);
