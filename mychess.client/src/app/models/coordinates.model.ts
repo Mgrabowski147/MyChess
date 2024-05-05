@@ -1,4 +1,4 @@
 export class Coordinates {
-  row: number; 
+  row: number;
   column: number;
 }

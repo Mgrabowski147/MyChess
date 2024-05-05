@@ -23,7 +23,11 @@ export class GameService {
     if (this.selectedSquare) {
       if (this.canMakeMove(this.selectedSquare, square)) {
         this.makeMove(
-          MoveFactory.createMoveWithSquares(this.selectedSquare, square),
+          MoveFactory.createMoveWithSquares(
+            this.selectedSquare,
+            square,
+            this.selectedSquare.piece()!.type,
+          ),
         );
         this.selectedSquare = undefined;
         return;

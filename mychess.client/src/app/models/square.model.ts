@@ -3,7 +3,7 @@ import { Piece } from './piece.model';
 import { Coordinates } from './coordinates.model';
 
 export class Square {
-  coordinates: Coordinates
+  coordinates: Coordinates;
   isBlack: boolean;
   piece: WritableSignal<Piece | undefined>;
   isHighlighted: WritableSignal<boolean>;

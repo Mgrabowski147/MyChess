@@ -3,7 +3,8 @@
     @for (row of displayBoard.squares; track row) {
       @for (square of row; track square) {
         <div class="chess-square">
-          <app-chess-square [square]="square" (click)="onSquareClick(square)"> </app-chess-square>
+          <app-chess-square [square]="square" (click)="onSquareClick(square)">
+          </app-chess-square>
         </div>
       }
     }

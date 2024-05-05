@@ -5,6 +5,7 @@ import { Square } from '../../models/square.model';
 import { Board } from '../../models/board.model';
 import { Move } from '../../models/move.model';
 import { MovesHelper } from './moves.helper';
+import { PieceType } from '../../enums/piece-type.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,11 @@ import { MovesHelper } from './moves.helper';
 export class KnightMovesService implements IPieceMovesStrategy {
   constructor() {}
 
-  public getMoves(square: Square, board: Board): Move[] {
+  getSpecialMoves(): Move[] {
+    return [];
+  }
+
+  public getBasicMoves(square: Square, board: Board): Move[] {
     const moves: Move[] = [];
     const row = square.coordinates.row;
     const column = square.coordinates.column;
@@ -41,6 +46,7 @@ export class KnightMovesService implements IPieceMovesStrategy {
           MoveFactory.createMoveWithSquares(
             square,
             board.squares[newRow][newColumn],
+            PieceType.Knight,
           ),
         );
       }

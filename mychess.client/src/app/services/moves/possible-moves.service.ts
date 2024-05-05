@@ -38,7 +38,7 @@ export class PossibleMovesService {
     if (movesStrategyType) {
       return this.injector
         .get<IPieceMovesStrategy>(movesStrategyType)
-        .getMoves(square, board);
+        .getBasicMoves(square, board);
     }
 
     return moves;

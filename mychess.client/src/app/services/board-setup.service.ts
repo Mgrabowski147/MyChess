@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PieceColour } from '../enums/piece-colour.enum';
+import { PlayerColour } from '../enums/piece-colour.enum';
 import { PieceType } from '../enums/piece-type.enum';
 import { Board } from '../models/board.model';
 import { Piece } from '../models/piece.model';
@@ -53,12 +53,12 @@ export class BoardSetupService {
     return [0, 1, 6, 7].includes(row);
   }
 
-  private GetPieceColour(row: number): PieceColour | undefined {
+  private GetPieceColour(row: number): PlayerColour | undefined {
     if (row === 0 || row === 1) {
-      return PieceColour.White;
+      return PlayerColour.White;
     }
     if (row === 6 || row === 7) {
-      return PieceColour.Black;
+      return PlayerColour.Black;
     }
 
     return undefined;

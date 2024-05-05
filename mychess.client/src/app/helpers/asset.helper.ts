@@ -1,11 +1,11 @@
-import { PieceColour } from '../enums/piece-colour.enum';
+import { PlayerColour } from '../enums/piece-colour.enum';
 import { PieceType } from '../enums/piece-type.enum';
 import { Piece } from '../models/piece.model';
 
 export class AssetHelper {
-  private static readonly colourMap = new Map<PieceColour, string>([
-    [PieceColour.Black, 'black'],
-    [PieceColour.White, 'white'],
+  private static readonly colourMap = new Map<PlayerColour, string>([
+    [PlayerColour.Black, 'black'],
+    [PlayerColour.White, 'white'],
   ]);
 
   private static readonly typeMap = new Map<PieceType, string>([

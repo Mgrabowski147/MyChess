@@ -15,9 +15,13 @@ export class QueenMovesStrategyService implements IPieceMovesStrategy {
     private bishopMovesService: BishopMovesStrategyService,
   ) {}
 
-  getMoves(square: Square, board: Board): Move[] {
+  getSpecialMoves(): Move[] {
+    return [];
+  }
+
+  getBasicMoves(square: Square, board: Board): Move[] {
     return this.bishopMovesService
-      .getMoves(square, board)
-      .concat(this.rookMovesService.getMoves(square, board));
+      .getBasicMoves(square, board)
+      .concat(this.rookMovesService.getBasicMoves(square, board));
   }
 }

@@ -3,8 +3,10 @@ import { IPieceMovesStrategy } from './piece-moves-strategy.interface';
 import { Board } from '../../models/board.model';
 import { Move } from '../../models/move.model';
 import { Square } from '../../models/square.model';
-import { PieceColour } from '../../enums/piece-colour.enum';
+import { PlayerColour } from '../../enums/piece-colour.enum';
 import { MoveFactory } from './MoveFactory';
+import { Game } from '../../models/game.model';
+import { PieceType } from '../../enums/piece-type.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -12,13 +14,26 @@ import { MoveFactory } from './MoveFactory';
 export class PawnMovesService implements IPieceMovesStrategy {
   constructor() {}
 
-  public getMoves(square: Square, board: Board): Move[] {
+  getSpecialMoves(square: Square, board: Board, game: Game): Move[] {
+    const moves: Move[] = [];
+    const piece = square.piece();
+
+    if (!piece || game.moves?.length === 0) return [];
+
+    if (piece.colour === PlayerColour.White) {
+      if (square.coordinates.row !== 5) return [];
+    }
+
+    return moves;
+  }
+
+  public getBasicMoves(square: Square, board: Board): Move[] {
     const moves: Move[] = [];
     const piece = square.piece();
 
     if (!piece) return moves;
 
-    const direction = piece.colour === PieceColour.White ? 1 : -1;
+    const direction = piece.colour === PlayerColour.White ? 1 : -1;
 
     this.addForwardMoves(square, direction, board, moves);
 
@@ -48,7 +63,13 @@ export class PawnMovesService implements IPieceMovesStrategy {
           targetSquare.piece() &&
           targetSquare.piece()?.colour !== piece.colour
         ) {
-          moves.push(MoveFactory.createMoveWithSquares(square, targetSquare));
+          moves.push(
+            MoveFactory.createMoveWithSquares(
+              square,
+              targetSquare,
+              PieceType.Pawn,
+            ),
+          );
         }
       }
     }
@@ -72,6 +93,7 @@ export class PawnMovesService implements IPieceMovesStrategy {
         MoveFactory.createMoveWithSquares(
           square,
           board.squares[forwardRow][column],
+          PieceType.Pawn,
         ),
       );
 
@@ -81,6 +103,7 @@ export class PawnMovesService implements IPieceMovesStrategy {
           MoveFactory.createMoveWithSquares(
             square,
             board.squares[doubleForwardRow][column],
+            PieceType.Pawn,
           ),
         );
       }
@@ -92,7 +115,7 @@ export class PawnMovesService implements IPieceMovesStrategy {
   }
 
   private canMoveTwoSquares(square: Square, board: Board): boolean {
-    if (square.piece()?.colour === PieceColour.White) {
+    if (square.piece()?.colour === PlayerColour.White) {
       if (square.coordinates.row !== 1) {
         return false;
       }

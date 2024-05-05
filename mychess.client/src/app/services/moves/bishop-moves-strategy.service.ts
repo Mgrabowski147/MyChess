@@ -5,6 +5,7 @@ import { Board } from '../../models/board.model';
 import { MoveFactory } from './MoveFactory';
 import { MovesHelper } from './moves.helper';
 import { IPieceMovesStrategy } from './piece-moves-strategy.interface';
+import { PieceType } from '../../enums/piece-type.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,11 @@ import { IPieceMovesStrategy } from './piece-moves-strategy.interface';
 export class BishopMovesStrategyService implements IPieceMovesStrategy {
   constructor() {}
 
-  public getMoves(square: Square, board: Board): Move[] {
+  getSpecialMoves(): Move[] {
+    return [];
+  }
+
+  public getBasicMoves(square: Square, board: Board): Move[] {
     const moves: Move[] = [];
     const row = square.coordinates.row;
     const column = square.coordinates.column;
@@ -21,7 +26,13 @@ export class BishopMovesStrategyService implements IPieceMovesStrategy {
     for (let i = 1; row + i < 8 && column + i < 8; i++) {
       const squareToCheck = board.squares[row + i][column + i];
       if (MovesHelper.canMoveToSquare(square, squareToCheck)) {
-        moves.push(MoveFactory.createMoveWithSquares(square, squareToCheck));
+        moves.push(
+          MoveFactory.createMoveWithSquares(
+            square,
+            squareToCheck,
+            PieceType.Bishop,
+          ),
+        );
       }
 
       if (!MovesHelper.canPassSquare(squareToCheck)) {
@@ -33,7 +44,13 @@ export class BishopMovesStrategyService implements IPieceMovesStrategy {
     for (let i = 1; row + i < 8 && column - i >= 0; i++) {
       const squareToCheck = board.squares[row + i][column - i];
       if (MovesHelper.canMoveToSquare(square, squareToCheck)) {
-        moves.push(MoveFactory.createMoveWithSquares(square, squareToCheck));
+        moves.push(
+          MoveFactory.createMoveWithSquares(
+            square,
+            squareToCheck,
+            PieceType.Bishop,
+          ),
+        );
       }
 
       if (!MovesHelper.canPassSquare(squareToCheck)) {
@@ -45,7 +62,13 @@ export class BishopMovesStrategyService implements IPieceMovesStrategy {
     for (let i = 1; row - i >= 0 && column + i < 8; i++) {
       const squareToCheck = board.squares[row - i][column + i];
       if (MovesHelper.canMoveToSquare(square, squareToCheck)) {
-        moves.push(MoveFactory.createMoveWithSquares(square, squareToCheck));
+        moves.push(
+          MoveFactory.createMoveWithSquares(
+            square,
+            squareToCheck,
+            PieceType.Bishop,
+          ),
+        );
       }
 
       if (!MovesHelper.canPassSquare(squareToCheck)) {
@@ -57,7 +80,13 @@ export class BishopMovesStrategyService implements IPieceMovesStrategy {
     for (let i = 1; row - i >= 0 && column - i >= 0; i++) {
       const squareToCheck = board.squares[row - i][column - i];
       if (MovesHelper.canMoveToSquare(square, squareToCheck)) {
-        moves.push(MoveFactory.createMoveWithSquares(square, squareToCheck));
+        moves.push(
+          MoveFactory.createMoveWithSquares(
+            square,
+            squareToCheck,
+            PieceType.Bishop,
+          ),
+        );
       }
 
       if (!MovesHelper.canPassSquare(squareToCheck)) {
