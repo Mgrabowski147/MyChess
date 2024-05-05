@@ -7,26 +7,14 @@ import { PlayerColour } from '../../enums/piece-colour.enum';
 import { MoveFactory } from './MoveFactory';
 import { Game } from '../../models/game.model';
 import { PieceType } from '../../enums/piece-type.enum';
+import { MoveBuilder } from './move-builder';
+import { MoveSpecialEffect } from '../../models/move-special-effect.model';
+import { MoveSpecialEffectType } from '../../enums/move-special-effect-type.enum';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PawnMovesService implements IPieceMovesStrategy {
-  constructor() {}
-
-  getSpecialMoves(square: Square, board: Board, game: Game): Move[] {
-    const moves: Move[] = [];
-    const piece = square.piece();
-
-    if (!piece || game.moves?.length === 0) return [];
-
-    if (piece.colour === PlayerColour.White) {
-      if (square.coordinates.row !== 5) return [];
-    }
-
-    return moves;
-  }
-
   public getBasicMoves(square: Square, board: Board): Move[] {
     const moves: Move[] = [];
     const piece = square.piece();
@@ -40,6 +28,23 @@ export class PawnMovesService implements IPieceMovesStrategy {
     this.addDiagonalMoves(square, direction, board, moves);
 
     return moves;
+  }
+
+  getSpecialMoves(square: Square, board: Board, game: Game): Move[] {
+    const piece = square.piece();
+
+    if (!piece || game.moves?.length === 0) return [];
+
+    if (!this.isOnAdequateRowToEnPassant(square)) return [];
+
+    const lastMove = game.moves[game.moves.length - 1];
+    if (lastMove.pieceType !== PieceType.Pawn) return [];
+
+    if (!this.wasLastMoveOnAdjacentColumn(lastMove, square)) return [];
+
+    if (!this.isLastMoveTwoRowsMove(lastMove)) return [];
+
+    return this.holyHell(square, lastMove);
   }
 
   private addDiagonalMoves(
@@ -150,5 +155,43 @@ export class PawnMovesService implements IPieceMovesStrategy {
 
       return true;
     }
+  }
+
+  private isOnAdequateRowToEnPassant(square: Square) {
+    if (square.piece()?.colour === PlayerColour.White) {
+      return square.coordinates.row === 4;
+    }
+
+    return square.coordinates.row === 3;
+  }
+
+  private wasLastMoveOnAdjacentColumn(lastMove: Move, square: Square) {
+    return Math.abs(lastMove.from.column - square.coordinates.column) === 1;
+  }
+
+  private isLastMoveTwoRowsMove(lastMove: Move) {
+    return Math.abs(lastMove.from.row - lastMove.to.row) === 2;
+  }
+
+  private holyHell(square: Square, lastMove: Move): Move[] {
+    const moveBuilder = new MoveBuilder();
+
+    const specialEffect: MoveSpecialEffect = {
+      specialEffectType: MoveSpecialEffectType.RemovePiece,
+      squareToAffect: lastMove.to,
+    };
+
+    moveBuilder
+      .fromSquare(square)
+      .withPiece(PieceType.Pawn)
+      .withSpecialEffect(specialEffect);
+
+    if (square.piece()?.colour === PlayerColour.White) {
+      moveBuilder.toCoords({ column: lastMove.to.column, row: 5 });
+    } else {
+      moveBuilder.toCoords({ column: lastMove.to.column, row: 2 });
+    }
+
+    return [moveBuilder.build()];
   }
 }

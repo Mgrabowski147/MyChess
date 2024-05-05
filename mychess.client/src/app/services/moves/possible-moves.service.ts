@@ -10,6 +10,7 @@ import { BishopMovesStrategyService } from './bishop-moves-strategy.service';
 import { KnightMovesService } from './knight-moves-strategy.service';
 import { QueenMovesStrategyService } from './queen-moves-strategy.service';
 import { KingMovesStrategyService } from './king-moves-strategy.service';
+import { Game } from '../../models/game.model';
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +27,11 @@ export class PossibleMovesService {
 
   constructor(private injector: Injector) {}
 
-  public GetPossibleMovesForSquare(square: Square, board: Board): Move[] {
+  public GetPossibleMovesForSquare(
+    square: Square,
+    board: Board,
+    game: Game,
+  ): Move[] {
     const moves: Move[] = [];
 
     if (!square.piece()) {
@@ -36,9 +41,11 @@ export class PossibleMovesService {
     const movesStrategyType = this.strategyMap.get(square.piece()!.type);
 
     if (movesStrategyType) {
-      return this.injector
-        .get<IPieceMovesStrategy>(movesStrategyType)
-        .getBasicMoves(square, board);
+      const strategy =
+        this.injector.get<IPieceMovesStrategy>(movesStrategyType);
+      return strategy
+        .getBasicMoves(square, board)
+        .concat(strategy.getSpecialMoves(square, board, game));
     }
 
     return moves;
