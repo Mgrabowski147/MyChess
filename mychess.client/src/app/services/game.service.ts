@@ -6,6 +6,7 @@ import { Move } from '../models/move.model';
 import { Game } from '../models/game.model';
 import { MoveSpecialEffect } from '../models/move-special-effect.model';
 import { MoveSpecialEffectType } from '../enums/move-special-effect-type.enum';
+import { Coordinates } from '../models/coordinates.model';
 
 // Not meant to be singleton - should be provided at component level
 @Injectable()
@@ -69,6 +70,21 @@ export class GameService {
   }
 
   private makeMove(from: Square, to: Square) {
+    const move = this.getMove(from, to);
+
+    if (!move) {
+      throw `move impossible: ` + move;
+    }
+
+    if (move.specialEffect) {
+      this.executeMoveSpecialEffect(move.specialEffect);
+    }
+
+    this.game.moves.push(move);
+    this.movePieces(move.from, move.to);
+  }
+
+  private getMove(from: Square, to: Square) {
     const moves = this.movesService.GetPossibleMovesForSquare(
       from,
       this.board,
@@ -80,20 +96,13 @@ export class GameService {
         move.to.row === to.coordinates.row &&
         move.to.column === to.coordinates.column,
     );
+    return move;
+  }
 
-    if (!move) {
-      throw `move impossible: ` + move;
-    }
-
-    if (move.specialEffect) {
-      this.executeMoveSpecialEffect(move.specialEffect);
-    }
-
-    this.game.moves.push(move);
-    const pieceToMove =
-      this.board.squares[move.from.row][move.from.column].piece();
-    this.board.squares[move.from.row][move.from.column].piece.set(undefined);
-    this.board.squares[move.to.row][move.to.column].piece.set(pieceToMove);
+  private movePieces(from: Coordinates, to: Coordinates) {
+    const pieceToMove = this.board.squares[from.row][from.column].piece();
+    this.board.squares[from.row][from.column].piece.set(undefined);
+    this.board.squares[to.row][to.column].piece.set(pieceToMove);
   }
 
   private executeMoveSpecialEffect(moveSpecialEffect: MoveSpecialEffect): void {
@@ -103,6 +112,18 @@ export class GameService {
       this.board.squares[moveSpecialEffect.squareToAffect.row][
         moveSpecialEffect.squareToAffect.column
       ].piece.set(undefined);
+
+      return;
+    }
+
+    if (
+      moveSpecialEffect.specialEffectType === MoveSpecialEffectType.MovePiece &&
+      moveSpecialEffect.destinationSquare != null
+    ) {
+      this.movePieces(
+        moveSpecialEffect.squareToAffect,
+        moveSpecialEffect.destinationSquare,
+      );
     }
   }
 }

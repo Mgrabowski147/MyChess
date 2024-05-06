@@ -554,3 +554,4 @@ FodyWeavers.xsd
 # JetBrains Rider
 
 # End of https://www.toptal.com/developers/gitignore/api/angular,csharp,aspnetcore
+/mychess.client/.nx/cache
